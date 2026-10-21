@@ -52,3 +52,12 @@ def test_el_precio_que_trae_el_item_se_ignora():
     subtotal = calcular_subtotal(carrito)
 
     assert subtotal == Decimal("24999.90")
+
+
+@pytest.mark.parametrize("producto", ["gorra", "Buzo", " buzo ", "", None])
+def test_producto_fuera_del_catalogo_es_inexistente(producto):
+    item_invalido = item(producto=producto)
+
+    codigo = codigo_de_error(validar_item, item_invalido)
+
+    assert codigo == "PRODUCTO_INEXISTENTE"
