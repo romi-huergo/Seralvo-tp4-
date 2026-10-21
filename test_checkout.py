@@ -1,3 +1,4 @@
+import copy
 from datetime import date
 from decimal import Decimal
 
@@ -79,3 +80,21 @@ def test_talle_fuera_de_la_lista_es_invalido(talle):
     codigo = codigo_de_error(validar_item, item_invalido)
 
     assert codigo == "TALLE_INVALIDO"
+
+
+def test_validar_item_no_modifica_el_item():
+    item_original = item(talle=" m ")
+    copia = copy.deepcopy(item_original)
+
+    validar_item(item_original)
+
+    assert item_original == copia
+
+
+def test_calcular_total_no_modifica_el_carrito():
+    carrito = [item(talle=" m ", cantidad=5), item("remera", talle="xl")]
+    copia = copy.deepcopy(carrito)
+
+    calcular_total(carrito, "CABA", "EGRESADOS2026", HOY_VIGENTE)
+
+    assert carrito == copia
