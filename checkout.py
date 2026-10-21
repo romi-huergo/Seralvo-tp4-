@@ -41,7 +41,10 @@ def validar_item(item):
     if not isinstance(producto, str) or producto not in CATALOGO:
         raise CheckoutError("PRODUCTO_INEXISTENTE", f"Producto inexistente: {producto!r}")
 
-    item["talle"] = item["talle"].upper()
+    talle = item.get("talle")
+    if not isinstance(talle, str):
+        raise CheckoutError("TALLE_INVALIDO", f"Talle inválido: {talle!r}")
+    item["talle"] = talle.strip().upper()
 
     if item["talle"] not in TALLES:
         raise CheckoutError("TALLE_INVALIDO", f"Talle inválido: {item['talle']}")
