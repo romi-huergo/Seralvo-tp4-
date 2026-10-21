@@ -61,3 +61,21 @@ def test_producto_fuera_del_catalogo_es_inexistente(producto):
     codigo = codigo_de_error(validar_item, item_invalido)
 
     assert codigo == "PRODUCTO_INEXISTENTE"
+
+
+@pytest.mark.parametrize("talle", ["XS", "S", "M", "L", "XL", "XXL", "m", "xxl", "Xl", "  M ", " xs "])
+def test_talle_valido_sin_importar_mayusculas_ni_espacios(talle):
+    carrito = [item(talle=talle)]
+
+    subtotal = calcular_subtotal(carrito)
+
+    assert subtotal == Decimal("24999.90")
+
+
+@pytest.mark.parametrize("talle", ["XXXL", "XXS", "ZZ", "X L", "", "   ", None, 42])
+def test_talle_fuera_de_la_lista_es_invalido(talle):
+    item_invalido = item(talle=talle)
+
+    codigo = codigo_de_error(validar_item, item_invalido)
+
+    assert codigo == "TALLE_INVALIDO"
