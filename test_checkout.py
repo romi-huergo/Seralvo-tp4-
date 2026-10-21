@@ -44,3 +44,11 @@ def test_quince_por_ciento_con_medio_centavo_redondea_hacia_arriba():
     descuento = calcular_descuento(subtotal, 1, "EGRESADOS2026", HOY_VIGENTE)
 
     assert descuento == Decimal("1799.93")
+
+
+def test_el_precio_que_trae_el_item_se_ignora():
+    carrito = [item(precio=1)]
+
+    subtotal = calcular_subtotal(carrito)
+
+    assert subtotal == Decimal("24999.90")
