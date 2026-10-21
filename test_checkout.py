@@ -82,6 +82,29 @@ def test_talle_fuera_de_la_lista_es_invalido(talle):
     assert codigo == "TALLE_INVALIDO"
 
 
+@pytest.mark.parametrize("cantidad, esperado", [
+    (1, "24999.90"),
+    (2, "49999.80"),
+    (9, "224999.10"),
+    (10, "249999.00"),
+])
+def test_cantidad_entre_uno_y_diez_es_valida(cantidad, esperado):
+    carrito = [item(cantidad=cantidad)]
+
+    subtotal = calcular_subtotal(carrito)
+
+    assert subtotal == Decimal(esperado)
+
+
+@pytest.mark.parametrize("cantidad", [11, -1, 2.5, 3.0, "3", True, None])
+def test_cantidad_fuera_de_rango_o_no_entera_es_invalida(cantidad):
+    item_invalido = item(cantidad=cantidad)
+
+    codigo = codigo_de_error(validar_item, item_invalido)
+
+    assert codigo == "CANTIDAD_INVALIDA"
+
+
 def test_validar_item_no_modifica_el_item():
     item_original = item(talle=" m ")
     copia = copy.deepcopy(item_original)
